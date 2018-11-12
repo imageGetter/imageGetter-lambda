@@ -1,0 +1,21 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "imageGetter API with AWS Lambda",
+  "main": "index.js",
+  "repository": "https://github.com/imageGetter/lambda",
+  "author": "bum752 <bum752@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "serverless": "^1.32.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
