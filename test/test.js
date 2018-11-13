@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 describe('http(s) 테스트', function () {
-    const format = /^[(http://) (https://)]/;
+    const format = /^http:\/\/|https:\/\//;
 
     it('None', function (done) {
         const str = 'google.com';
@@ -11,7 +11,7 @@ describe('http(s) 테스트', function () {
     });
 
     it('http://', function (done) {
-        const str = 'http://oogle.com';
+        const str = 'http://google.com';
 
         assert.ok(format.test(str));
         done();
@@ -25,10 +25,11 @@ describe('http(s) 테스트', function () {
     });
 
     it('None to http://', function (done) {
-        let str = 'google.com';
-        assert.ok(!format.test(str));
-        if (!format.test(str)) str = 'http://' + str;
-        assert.ok(format.test(str));
+        const str = 'google.com/search';
+        let decodedURI = decodeURIComponent(str);
+        assert.ok(!format.test(decodedURI));
+        if (!format.test(decodedURI)) decodedURI = 'http://' + decodedURI;
+        assert.ok(format.test(decodedURI));
         done();
     });
 });
