@@ -4,6 +4,10 @@ const url = require('url');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
+const { WebClient } = require('@slack/client');
+const { SLACK_TOKEN, SLACK_CHANNEL } = process.env;
+const web = new WebClient(SLACK_TOKEN);
+
 module.exports.imgs = async (event, context, callback) => {
   const format = /^http:\/\/|https:\/\//;
 
@@ -48,6 +52,24 @@ module.exports.imgs = async (event, context, callback) => {
           }
         : null;
 
+      web.chat
+        .postMessage({
+          channel: SLACK_CHANNEL,
+          text: `${decodedURI}\r\n${encodedURI}\r\n${body.status} - ${
+            body.statusText
+          }`
+        })
+        .then(() => {
+          return body;
+        })
+        .catch(error => {
+          return {
+            ...body,
+            slack: error
+          };
+        });
+    })
+    .then(body => {
       callback(null, {
         statusCode: 500,
         headers: {
